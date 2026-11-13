@@ -1,60 +1,176 @@
 # Keepsake
 
-One person creates a memory project, shares a link, and everyone contributes voice messages, notes and photos
-**without an account**. Contributions are moderated and assembled into a keepsake page.
+<p align="center">
+  <strong>Every memory deserves to be shared.</strong>
+  <br />
+  One link. Everyone contributes. Memories that last forever.
+</p>
 
-Languages: English, Français, العربية (RTL), Español.
+<p align="center">
+  A collaborative memory-sharing platform where people collect photos, voice messages, and personal notes through a single shared link — without requiring contributors to create an account.
+</p>
 
-## Quick start
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js 16" />
+  <img src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/PostgreSQL-16-316192?logo=postgresql" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
+</p>
+
+---
+
+## Overview
+
+Keepsake makes it easy to bring people together around meaningful moments.
+
+Create a memory project, share its link, and invite friends, family, or colleagues to contribute. Every contribution becomes part of a personalized digital keepsake that can be shared and revisited.
+
+Designed for celebrations, milestones, appreciation, and the moments worth remembering.
+
+## Features
+
+- **Account-free contributions** — Contributors can participate without registering.
+- **Multiple contribution types** — Collect photos, voice messages, and written notes.
+- **Content moderation** — Review and approve contributions before publication.
+- **Privacy controls** — Choose link-based, password-protected, or private access.
+- **Scheduled reveals** — Keep contributions hidden until a special date.
+- **Personalization** — Six themes, stickers, and animated reactions.
+- **Story mode** — Experience collected memories through a dedicated player.
+- **Internationalization** — English, French, Arabic (RTL), and Spanish.
+
+## Use Cases
+
+| Occasion | Purpose |
+|---|---|
+| Birthdays | Collect wishes and memorable moments |
+| Weddings | Create a shared collection of memories |
+| Graduations | Preserve messages from friends and classmates |
+| Farewells | Give colleagues a meaningful digital gift |
+| Anniversaries | Celebrate shared experiences |
+| Team appreciation | Bring messages of gratitude together |
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Framework | Next.js 16 App Router |
+| Language | TypeScript |
+| UI & Styling | Tailwind CSS v4 |
+| Database | PostgreSQL 16 |
+| ORM | Drizzle ORM |
+| Authentication | Better Auth |
+| Internationalization | next-intl |
+| Media Storage | Local Storage / S3-compatible storage |
+| Object Storage | Cloudflare R2 or compatible providers |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+- Docker
+- PostgreSQL 16 (or Docker Compose)
+
+### Installation
 
 ```bash
-cp .env.example .env            # set BETTER_AUTH_SECRET and STORAGE_SIGNING_SECRET (openssl rand -hex 32)
-docker compose up -d            # Postgres 16 on :5432 (or use any Postgres 16 you already have)
+# Clone the repository
+git clone https://github.com/ahmedi56/keepsake.git
+
+# Navigate to the project
+cd keepsake
+
+# Create environment configuration
+cp .env.example .env
+
+# Start PostgreSQL
+docker compose up -d
+
+# Install dependencies
 npm install
+
+# Run database migrations
 npm run db:migrate
-npm run dev                     # http://localhost:3000
-npm run check                   # typecheck + lint + tests
+
+# Start development server
+npm run dev
 ```
 
-Testing on a real phone (needs HTTPS): see [PHONE-TEST.md](PHONE-TEST.md).
+Open [http://localhost:3000](http://localhost:3000).
 
-## Architecture (decisions)
+### Environment Configuration
 
-| Concern | Choice | Why |
-|---|---|---|
-| App | Next.js 16 App Router, TypeScript, Tailwind v4 | SSR for keepsake/link previews; one codebase |
-| i18n | next-intl, locale-prefixed routes, `dir="rtl"` for Arabic | `proxy.ts` picks locale from Accept-Language |
-| DB | PostgreSQL + Drizzle | relational data; typed SQL; plain migrations in `drizzle/` |
-| Auth | Better Auth (email/password, Google if configured) | organizers only; contributors never authenticate |
-| Storage | `STORAGE_DRIVER=local` (dev) or `s3` (Cloudflare R2 / any S3) | media never in Postgres; private, signed URLs |
-| Rate limiting | Postgres fixed-window counters | no Redis needed at MVP scale |
+Configure the required secrets in `.env`:
 
-### Security model
-- Contributors hold a **contribute token** (144-bit, write-only, revocable, optional expiry). The keepsake is
-  reached by an unguessable slug (64-bit suffix) plus privacy mode (link / password / private).
-- Uploads: signed URL, direct PUT, then on submit the server checks **key ownership** (must be under the
-  project's prefix), existence, size, and **magic-byte content type** (extension and declared type are ignored).
-  Rejected files are deleted.
-- Every organizer query is scoped by `ownerId` in SQL; IDs alone never grant access.
-- Edit secrets are stored hashed; passwords use scrypt; the unlock cookie is bound to the stored hash.
+- `BETTER_AUTH_SECRET`
+- `STORAGE_SIGNING_SECRET`
 
-## Status
-Phase 1 (core MVP) is implemented. Not yet built: cover-photo upload, video contributions, audio processing
-(ffmpeg worker), transcription (whisper.cpp worker), email invitations, ZIP export, payments, admin panel.
-No CSP header yet (needs nonce plumbing). Payment provider for Tunisia is still to be chosen.
+Generate secure values with:
 
-## Notes
-- The scaffold's `cacheComponents` / `partialPrefetching` flags are intentionally not enabled; pages render dynamically.
-- `npm audit` reports dev-only ESLint-toolchain advisories (braces). `npm audit fix --force` would downgrade Next, so it is not applied.
-- `scripts/seed-project.ts <email>` creates a sample project for local testing.
+```bash
+openssl rand -hex 32
+```
 
-## Themes, stickers, story mode, surprise reveal
-- `projects.theme` (6 themes, default per occasion), `projects.reveal_at`, `contributions.sticker` (8 fixed stickers).
-- Reveal is enforced on the server: before the date, visitors get no contributions and no media links. The owner can preview.
-- "Play all" story player on the keepsake page. `npm run smoke` runs 32 API checks against a running server (`SMOKE_URL`).
-- Migration: `npm run db:migrate` (0002_themes_reveal_stickers).
+Refer to `.env.example` for the remaining configuration options.
 
-## Emoji and animated reactions
-- Emoji picker: `emoji-picker-element` (Apache-2.0), search data self-hosted in `public/emoji-data` (en, fr; Arabic/Spanish use English names).
-- Animated reactions: Google Noto animated emoji (CC BY 4.0) from Google's font CDN, stored as `e:<codepoint>` from a fixed allow-list; falls back to the static emoji if the image can't load.
-- Media endpoint now supports HTTP Range (needed for audio on iPhone Safari).
+## Development
+
+Run type checking, linting, and tests:
+
+```bash
+npm run check
+```
+
+Run API smoke tests against a running server:
+
+```bash
+npm run smoke
+```
+
+Configure `SMOKE_URL` when testing a server running at a non-default address.
+
+## Architecture & Security
+
+Keepsake is built around a privacy-conscious architecture:
+
+- Organizers authenticate using Better Auth.
+- Contributors use revocable, scoped contribution tokens.
+- Media files are stored outside the relational database.
+- Uploads are validated server-side, including file ownership, size, existence, and magic-byte content type.
+- Private media is accessed through signed URLs.
+- Organizer database queries are scoped by ownership.
+- Passwords and editing secrets are securely hashed.
+- Scheduled reveals are enforced server-side.
+
+## Project Status
+
+**Phase 1 — Core MVP implemented.**
+
+The core platform is implemented. Additional capabilities are planned:
+
+- Video contributions
+- Audio processing and transcription
+- Email invitations
+- ZIP exports
+- Payments
+- Administration panel
+
+## Supported Languages
+
+- English
+- Français
+- العربية (RTL)
+- Español
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  <strong>Keepsake</strong>
+  <br />
+  Turning shared moments into lasting memories.
+</p>
