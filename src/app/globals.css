@@ -1,0 +1,126 @@
+@import "tailwindcss";
+@import "@fontsource-variable/bricolage-grotesque";
+
+/*
+ * Whitewashed-wall palette: chalk white, deep navy ink, a painted-door blue as the single accent,
+ * and a sun yellow used only for "this is the voice" moments (waveform playhead, highlights).
+ */
+:root {
+  --paper: #f6f7f5;
+  --paper-2: #eceff2;
+  --card: #ffffff;
+  --ink: #0e1c33;
+  --ink-soft: #4f5f78;
+  --line: #d8dee6;
+  --accent: #1d4ed8;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2eafc;
+  --sun: #f2b01e;
+  --night: #0e1c33;
+  --night-ink: #f1f4f9;
+  --ok: #1f7a4d;
+  --danger: #b3261e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0a1222;
+    --paper-2: #0f1a30;
+    --card: #14223b;
+    --ink: #eef2f8;
+    --ink-soft: #9fb0c8;
+    --line: #25344f;
+    --accent: #7ba3ff;
+    --accent-ink: #0a1222;
+    --accent-soft: #1a2c52;
+    --night: #070d1a;
+    --ok: #4cc38a;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-sun: var(--sun);
+  --color-night: var(--night);
+  --color-night-ink: var(--night-ink);
+  --color-ok: var(--ok);
+  --color-danger: var(--danger);
+  --font-display: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", "Helvetica Neue", Arial, sans-serif;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
+
+.font-display { font-weight: 650; font-variation-settings: "opsz" 48; }
+
+/* Arabic letters join: never track them, and use the system Arabic face for headings. */
+html[dir="rtl"] * { letter-spacing: 0 !important; }
+html[dir="rtl"] .font-display { font-family: var(--font-sans); font-weight: 700; }
+
+/* Hero waveform: the playhead sweeps once on load, then rests. */
+@keyframes sweep { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 38% 0 0); } }
+.wave-played { animation: sweep 2.4s 0.4s cubic-bezier(.3,.7,.2,1) both; }
+html[dir="rtl"] .wave-played { animation-name: sweep-rtl; }
+@keyframes sweep-rtl { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 38%); } }
+
+/* ---- Themes: accent + pattern + motif per occasion (see src/lib/themes.ts) ---- */
+[data-theme="sidi"] { --accent: #1d4ed8; --accent-soft: #e2eafc; --sun: #f2b01e; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%231d4ed8' stroke-opacity='.18' stroke-width='1.2'%3E%3Crect x='16' y='16' width='32' height='32'/%3E%3Crect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)'/%3E%3C/g%3E%3C/svg%3E"); }
+[data-theme="jasmine"] { --accent: #166534; --accent-soft: #e3f3e7; --sun: #d4a017; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23166534' stroke-opacity='.2' stroke-width='1.1'%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(0 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(72 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(144 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(216 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(288 32 32)'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='1.8' fill='%23166534' fill-opacity='.25'/%3E%3C/svg%3E"); }
+[data-theme="sunrise"] { --accent: #c2410c; --accent-soft: #ffe8d9; --sun: #f59e0b; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='%23c2410c' fill-opacity='.2'%3E%3Ccircle cx='10' cy='12' r='3'/%3E%3Ccircle cx='42' cy='8' r='1.8'/%3E%3Ccircle cx='54' cy='30' r='3.2'/%3E%3Ccircle cx='22' cy='38' r='1.6'/%3E%3Ccircle cx='8' cy='54' r='2.4'/%3E%3Ccircle cx='40' cy='56' r='3'/%3E%3C/g%3E%3C/svg%3E"); }
+[data-theme="night"] { --accent: #3b4d7a; --accent-soft: #e6e9f2; --sun: #aeb7d4; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M32 22 L34.2 29.8 L42 32 L34.2 34.2 L32 42 L29.8 34.2 L22 32 L29.8 29.8Z' fill='%233b4d7a' fill-opacity='.28'/%3E%3Cg fill='%233b4d7a' fill-opacity='.25'%3E%3Ccircle cx='9' cy='11' r='1.2'/%3E%3Ccircle cx='55' cy='50' r='1.2'/%3E%3Ccircle cx='52' cy='12' r='.9'/%3E%3C/g%3E%3C/svg%3E"); }
+[data-theme="olive"] { --accent: #4d6b1f; --accent-soft: #eaf0dc; --sun: #d9a520; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%234d6b1f' stroke-opacity='.22' stroke-width='1.2'%3E%3Cpath d='M18 46 C18 28 32 18 46 18 C46 36 34 46 18 46Z'/%3E%3Cpath d='M22 42 L40 24'/%3E%3C/g%3E%3C/svg%3E"); }
+[data-theme="gold"] { --accent: #92400e; --accent-soft: #fbeed3; --sun: #f2b01e; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%2392400e' stroke-opacity='.2' stroke-width='1.1'%3E%3Cpath d='M32 6 L58 32 L32 58 L6 32Z'/%3E%3Cpath d='M32 22 L42 32 L32 42 L22 32Z'/%3E%3C/g%3E%3C/svg%3E"); }
+@media (prefers-color-scheme: dark) {
+  [data-theme="sidi"] { --accent: #7ba3ff; --accent-soft: #1a2c52; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%237ba3ff' stroke-opacity='.18' stroke-width='1.2'%3E%3Crect x='16' y='16' width='32' height='32'/%3E%3Crect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)'/%3E%3C/g%3E%3C/svg%3E"); }
+  [data-theme="jasmine"] { --accent: #6ee7a0; --accent-soft: #16301f; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%236ee7a0' stroke-opacity='.2' stroke-width='1.1'%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(0 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(72 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(144 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(216 32 32)'/%3E%3Cellipse cx='32' cy='23' rx='4' ry='8' transform='rotate(288 32 32)'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='1.8' fill='%236ee7a0' fill-opacity='.25'/%3E%3C/svg%3E"); }
+  [data-theme="sunrise"] { --accent: #ffa070; --accent-soft: #3a2218; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='%23ffa070' fill-opacity='.2'%3E%3Ccircle cx='10' cy='12' r='3'/%3E%3Ccircle cx='42' cy='8' r='1.8'/%3E%3Ccircle cx='54' cy='30' r='3.2'/%3E%3Ccircle cx='22' cy='38' r='1.6'/%3E%3Ccircle cx='8' cy='54' r='2.4'/%3E%3Ccircle cx='40' cy='56' r='3'/%3E%3C/g%3E%3C/svg%3E"); }
+  [data-theme="night"] { --accent: #aab8e6; --accent-soft: #1c2540; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M32 22 L34.2 29.8 L42 32 L34.2 34.2 L32 42 L29.8 34.2 L22 32 L29.8 29.8Z' fill='%23aab8e6' fill-opacity='.28'/%3E%3Cg fill='%23aab8e6' fill-opacity='.25'%3E%3Ccircle cx='9' cy='11' r='1.2'/%3E%3Ccircle cx='55' cy='50' r='1.2'/%3E%3Ccircle cx='52' cy='12' r='.9'/%3E%3C/g%3E%3C/svg%3E"); }
+  [data-theme="olive"] { --accent: #b5d37a; --accent-soft: #26301a; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23b5d37a' stroke-opacity='.22' stroke-width='1.2'%3E%3Cpath d='M18 46 C18 28 32 18 46 18 C46 36 34 46 18 46Z'/%3E%3Cpath d='M22 42 L40 24'/%3E%3C/g%3E%3C/svg%3E"); }
+  [data-theme="gold"] { --accent: #fbbf24; --accent-soft: #3a2c10; --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23fbbf24' stroke-opacity='.2' stroke-width='1.1'%3E%3Cpath d='M32 6 L58 32 L32 58 L6 32Z'/%3E%3Cpath d='M32 22 L42 32 L32 42 L22 32Z'/%3E%3C/g%3E%3C/svg%3E"); }
+}
+
+.theme-pattern {
+  position: absolute; inset: 0 0 auto 0; height: 26rem; pointer-events: none;
+  background-image: var(--pattern); background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+}
+.motif-layer { position: absolute; inset: 0 0 auto 0; height: 30rem; overflow: hidden; pointer-events: none; }
+.motif { position: absolute; top: -6%; left: var(--x); width: var(--s); height: var(--s); opacity: 0; background: var(--accent); }
+.motif:nth-child(3n) { background: var(--sun); }
+@keyframes fall { 0% { transform: translateY(0) rotate(0); opacity: 0; } 10% { opacity: .75; } 90% { opacity: .6; } 100% { transform: translateY(30rem) rotate(360deg); opacity: 0; } }
+@keyframes rise { 0% { transform: translateY(30rem) rotate(0); opacity: 0; } 10% { opacity: .7; } 90% { opacity: .5; } 100% { transform: translateY(0) rotate(180deg); opacity: 0; } }
+@keyframes drift { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: .7; } 50% { transform: translate(26px, 15rem) rotate(120deg); } 100% { transform: translate(-14px, 30rem) rotate(240deg); opacity: 0; } }
+@keyframes twinkle { 0%, 100% { opacity: .1; transform: scale(.6); } 50% { opacity: .9; transform: scale(1.15); } }
+[data-theme="sunrise"] .motif { border-radius: 2px; animation: fall var(--t) linear var(--d) infinite; }
+[data-theme="jasmine"] .motif { border-radius: 100% 0 100% 0; animation: drift var(--t) ease-in-out var(--d) infinite; }
+[data-theme="olive"] .motif { border-radius: 0 100% 0 100%; animation: drift var(--t) ease-in-out var(--d) infinite; }
+[data-theme="gold"] .motif { clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); animation: rise var(--t) linear var(--d) infinite; }
+[data-theme="sidi"] .motif { border-radius: 9999px; animation: rise var(--t) ease-in var(--d) infinite; }
+[data-theme="night"] .motif { top: var(--y); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); animation: twinkle var(--t) ease-in-out var(--d) infinite; }
+
+/* Story player */
+@keyframes bars { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+.story-bar { transform-origin: center; animation: bars 1s ease-in-out infinite; }
+.story-paused .story-bar { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; }
+  .motif, .story-bar { animation: none !important; }
+  .motif { opacity: .25; }
+}

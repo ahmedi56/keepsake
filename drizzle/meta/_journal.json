@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791467554783,
+      "tag": "0000_absent_blizzard",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791467623885,
+      "tag": "0001_open_jackpot",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791485767214,
+      "tag": "0002_themes_reveal_stickers",
+      "breakpoints": true
+    }
+  ]
+}
