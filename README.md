@@ -145,7 +145,7 @@ Keepsake is built around a privacy-conscious architecture:
 
 ## Project Status
 
-**Phase 1 — Core MVP implemented.**
+**Phase 1 : Core MVP implemented.**
 
 The core platform is implemented. Additional capabilities are planned:
 
