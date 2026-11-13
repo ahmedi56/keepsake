@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  A collaborative memory-sharing platform where people collect photos, voice messages, and personal notes through a single shared link — without requiring contributors to create an account.
+  A collaborative memory-sharing platform where people collect photos, voice messages, and personal notes through a single shared link  without requiring contributors to create an account.
 </p>
 
 <p align="center">
