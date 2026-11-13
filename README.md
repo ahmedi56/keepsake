@@ -29,14 +29,14 @@ Designed for celebrations, milestones, appreciation, and the moments worth remem
 
 ## Features
 
-- **Account-free contributions** — Contributors can participate without registering.
-- **Multiple contribution types** — Collect photos, voice messages, and written notes.
-- **Content moderation** — Review and approve contributions before publication.
-- **Privacy controls** — Choose link-based, password-protected, or private access.
-- **Scheduled reveals** — Keep contributions hidden until a special date.
-- **Personalization** — Six themes, stickers, and animated reactions.
-- **Story mode** — Experience collected memories through a dedicated player.
-- **Internationalization** — English, French, Arabic (RTL), and Spanish.
+- **Account-free contributions** : Contributors can participate without registering.
+- **Multiple contribution types** : Collect photos, voice messages, and written notes.
+- **Content moderation** : Review and approve contributions before publication.
+- **Privacy controls** : Choose link-based, password-protected, or private access.
+- **Scheduled reveals** : Keep contributions hidden until a special date.
+- **Personalization** : Six themes, stickers, and animated reactions.
+- **Story mode** : Experience collected memories through a dedicated player.
+- **Internationalization** : English, French, Arabic (RTL), and Spanish.
 
 ## Use Cases
 
